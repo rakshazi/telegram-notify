@@ -4,10 +4,12 @@ namespace Rakshazi\TelegramNotify\Observer;
 class Trello implements \SplObserver
 {
     protected $config;
+    protected $curl;
 
     public function __construct(array $config)
     {
         $this->config = $config;
+        $this->curl = new \Curl\Curl;
     }
 
     public function update(\SplSubject $bot)
@@ -31,8 +33,7 @@ class Trello implements \SplObserver
 
     protected function getNotifications()
     {
-        $url = 'https://api.trello.com/1/members/me/notifications?';
-        $url.=http_build_query([
+        $this->curl->get('https://api.trello.com/1/members/me/notifications', [
             'key' => $this->config['api_key'],
             'token' => $this->config['token'],
             'unread' => 'true',
@@ -41,21 +42,14 @@ class Trello implements \SplObserver
             'entities' => 'true',
         ]);
 
-        $raw = file_get_contents($url);
-        return json_decode($raw);
+        return $this->curl->response;
     }
 
     protected function markAsRead()
     {
-        $fields = http_build_query([
+        $this->curl->post('https://api.trello.com/1/notifications/all/read', [
             'key' => $this->config['api_key'],
             'token' => $this->config['token']
         ]);
-        $ch = curl_init('https://api.trello.com/1/notifications/all/read');
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
     }
 }

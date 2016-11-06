@@ -13,7 +13,9 @@
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-imap": "*",
-        "ext-SimpleXML": "*"
+        "ext-xml": "*",
+        "ext-json": "*",
+        "php-curl-class/php-curl-class": "^7.0"
     },
     "autoload": {
         "psr-4": {"Rakshazi\\": "src"}

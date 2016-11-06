@@ -10,8 +10,10 @@ class RSS implements \SplObserver
 
     public function __construct(string $url)
     {
-        $string = file_get_contents($url);
-        $this->xml = new \SimpleXMLElement($string);
+        $curl = new \Curl\Curl;
+        $curl->get($url);
+        $this->xml = new \SimpleXMLElement($curl->response);
+        unset($curl);
     }
 
     public function update(\SplSubject $bot)
