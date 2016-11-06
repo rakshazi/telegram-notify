@@ -12,7 +12,7 @@ class RSS implements \SplObserver
     {
         $curl = new \Curl\Curl;
         $curl->get($url);
-        $this->xml = new \SimpleXMLElement($curl->response);
+        $this->xml = $curl->response;
         unset($curl);
     }
 
