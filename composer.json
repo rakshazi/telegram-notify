@@ -10,7 +10,11 @@
         }
     ],
     "require": {
-        "mauris/packer": "dev-master"
+        "mauris/packer": "dev-master",
+        "ext-curl": "*",
+        "ext-iconv": "*",
+        "ext-imap": "*",
+        "ext-SimpleXML": "*"
     },
     "autoload": {
         "psr-4": {"Rakshazi\\": "src"}
