@@ -21,8 +21,8 @@ class Trello implements \SplObserver
             }
             $bot->sendMessage(
                 'Trello',
-                $title,
-                ''
+                '',
+                $title
             );
         }
 
