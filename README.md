@@ -1,9 +1,5 @@
 # Telegram Notify
 
-# DO NOT USE IN PRODUCTION
-
-# UNDER HEAVY DEVELOPMENT!
-
 This library collects data from multiple services, converts (transforms) it and send you as Telegram Message.
 
 # Usage

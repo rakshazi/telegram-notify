@@ -10,7 +10,6 @@
         }
     ],
     "require": {
-        "mauris/packer": "dev-master",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-imap": "*",
