@@ -1,4 +1,5 @@
 # Telegram Notify
+[![Latest Stable Version](https://poser.pugx.org/rakshazi/telegram-notify/v/stable)](https://packagist.org/packages/rakshazi/telegram-notify) [![Total Downloads](https://poser.pugx.org/rakshazi/telegram-notify/downloads)](https://packagist.org/packages/rakshazi/telegram-notify) [![Latest Unstable Version](https://poser.pugx.org/rakshazi/telegram-notify/v/unstable)](https://packagist.org/packages/rakshazi/telegram-notify) [![License](https://poser.pugx.org/rakshazi/telegram-notify/license)](https://packagist.org/packages/rakshazi/telegram-notify)
 
 This library collects data from multiple services, converts (transforms) it and send you as Telegram Message.
 
