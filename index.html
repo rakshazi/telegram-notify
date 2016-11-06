@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Telegram-notify by rakshazi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Telegram-notify</h1>
+      <h2 class="project-tagline">Get notification from multiple services into one telegram chat</h2>
+      <a href="https://github.com/rakshazi/telegram-notify" class="btn">View on GitHub</a>
+      <a href="https://github.com/rakshazi/telegram-notify/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/rakshazi/telegram-notify/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="telegram-notify" class="anchor" href="#telegram-notify" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Telegram Notify</h1>
+
+<p>This library collects data from multiple services, converts (transforms) it and send you as Telegram Message.</p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<ol>
+<li>
+<a href="https://core.telegram.org/bots#creating-a-new-bot">Create Telegram Bot</a> - you need only token here</li>
+<li>Add bot to any chat or send it a message directly</li>
+<li>Open URL <code>https://api.telegram.org/bot&lt;BOT TOKEN&gt;/getUpdates</code> (replace <code>&lt;BOT TOKEN&gt;</code> with your bot token) and get your chat id(-s).</li>
+<li>Write configuration array for Telegram Notify library:</li>
+</ol>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$config</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>token<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;BOT TOKEN&gt;<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>notifications<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>chat_id<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;YOUR CHAT ID&gt;<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>parse_mode<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>HTML<span class="pl-pds">'</span></span>, <span class="pl-c">//currently supported only 'HTML'</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>notify<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [ <span class="pl-c">//List of integrations, you can add multiple accounts for each service and multiple services</span></span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-c">//RSS integration will post you messages with new items in feed</span></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>RSS<span class="pl-pds">'</span></span>, <span class="pl-c">//Integration type</span></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>https://www.teamoctos.com/category/changelog/feed/<span class="pl-pds">'</span></span> <span class="pl-c">//Feed source URL</span></span>
+<span class="pl-s1">                ],</span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span>, <span class="pl-c">//Works with any IMAP server</span></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>mailbox<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>{imap.gmail.com:993/imap/ssl}INBOX<span class="pl-pds">'</span></span>, <span class="pl-c">//@link https://secure.php.net/manual/ru/function.imap-open.php</span></span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>user<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>example@gmail.com<span class="pl-pds">'</span></span>, <span class="pl-c">// your login</span></span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>example-password<span class="pl-pds">'</span></span> <span class="pl-c">// your password</span></span>
+<span class="pl-s1">                    ]</span>
+<span class="pl-s1">                ],</span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Trello<span class="pl-pds">'</span></span>, <span class="pl-c">//Get all unread notifications from trello</span></span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>api_key<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>trello-app-key<span class="pl-pds">'</span></span>, <span class="pl-c">//https://trello.com/app-key</span></span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>token<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>trello-user-token<span class="pl-pds">'</span></span> <span class="pl-c">//https://developers.trello.com/authorize</span></span>
+<span class="pl-s1">                    ],</span>
+<span class="pl-s1">                ]</span>
+<span class="pl-s1">            ],</span>
+<span class="pl-s1">        ],</span>
+<span class="pl-s1">    ],</span>
+<span class="pl-s1">];</span></pre></div>
+
+<p>Good! Now you need create function, which will check if message was already sent.</p>
+
+<p>I use <a href="https://github.com/mauris/Packer-PHP">mauris/packer</a> (you need <strong>dev-master</strong> version for <code>exists</code> function)
+as storage for already sent messages, here is it:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">//Arguments: chat id, message text</span></span>
+<span class="pl-s1"><span class="pl-c">//Must return bool</span></span>
+<span class="pl-s1"><span class="pl-smi">$isSent</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-c1">string</span> <span class="pl-smi">$chatId</span>, <span class="pl-c1">string</span> <span class="pl-smi">$message</span>) {</span>
+<span class="pl-s1">    <span class="pl-smi">$key</span> <span class="pl-k">=</span> <span class="pl-c1">md5</span>(<span class="pl-smi">$chatId</span><span class="pl-k">.</span><span class="pl-smi">$message</span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$sent</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Packer\</span><span class="pl-c1">Packer</span>(<span class="pl-s"><span class="pl-pds">'</span>./sent.pack<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-smi">$sent</span><span class="pl-k">-&gt;</span>exists(<span class="pl-smi">$key</span>)) {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-c1">true</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-smi">$sent</span><span class="pl-k">-&gt;</span>write(<span class="pl-smi">$key</span>, <span class="pl-smi">$message</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-c1">false</span>;</span>
+<span class="pl-s1">};</span></pre></div>
+
+<p>Very good! Final run script must be something like this (I use it for my private integration):</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>./vendor/autoload.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"><span class="pl-smi">$config</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>token<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>toke<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>notifications<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>chat_id<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>chat_id<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>parse_mode<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>HTML<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>notify<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>RSS<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>https://www.teamoctos.com/category/changelog/feed/<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">                ],</span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>mailbox<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>{imap.gmail.com:993/imap/ssl}INBOX<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>user<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>example@gmail.com<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>example-password<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">                    ]</span>
+<span class="pl-s1">                ],</span>
+<span class="pl-s1">                [</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Trello<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>api_key<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                        <span class="pl-s"><span class="pl-pds">'</span>token<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>token<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">                    ],</span>
+<span class="pl-s1">                ]</span>
+<span class="pl-s1">            ],</span>
+<span class="pl-s1">        ],</span>
+<span class="pl-s1">    ],</span>
+<span class="pl-s1">];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$isSent</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-c1">string</span> <span class="pl-smi">$chatId</span>, <span class="pl-c1">string</span> <span class="pl-smi">$message</span>) {</span>
+<span class="pl-s1">    <span class="pl-smi">$key</span> <span class="pl-k">=</span> <span class="pl-c1">md5</span>(<span class="pl-smi">$chatId</span><span class="pl-k">.</span><span class="pl-smi">$message</span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$sent</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Packer\</span><span class="pl-c1">Packer</span>(<span class="pl-s"><span class="pl-pds">'</span>./sent.pack<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-smi">$sent</span><span class="pl-k">-&gt;</span>exists(<span class="pl-smi">$key</span>)) {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-c1">true</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">    <span class="pl-smi">$sent</span><span class="pl-k">-&gt;</span>write(<span class="pl-smi">$key</span>, <span class="pl-smi">$message</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">return</span> <span class="pl-c1">false</span>;</span>
+<span class="pl-s1">};</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$notify</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Rakshazi\</span><span class="pl-c1">TelegramNotify</span>(<span class="pl-smi">$config</span>, <span class="pl-smi">$isSent</span>);</span>
+<span class="pl-s1"><span class="pl-smi">$notify</span><span class="pl-k">-&gt;</span>run();</span></pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/rakshazi/telegram-notify">Telegram-notify</a> is maintained by <a href="https://github.com/rakshazi">rakshazi</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
