@@ -32,9 +32,13 @@ class Bot implements \SplSubject
      * @var callable
      */
     private $isSent;
+
+    protected $curl;
+
     public function __construct()
     {
         $this->observers = new \SplObjectStorage;
+        $this->curl = new \Curl\Curl;
     }
 
     public function attach(\SplObserver $observer)
@@ -82,26 +86,15 @@ class Bot implements \SplSubject
 
     public function sendMessage(string $type, string $title, string $body)
     {
-        $text = ($this->parseMode == 'HTML') ? "<b>$type</b>: " : "$type: ";
-        $text.= "$title\n\r\n$body";
-        $message = json_encode([
-            'chat_id' => $this->chatId,
-            'parse_mode' => $this->parseMode,
-            'text' => $text
-        ]);
-
         if (!($this->isSent)($this->chatId, $body)) {
-            $ch = curl_init('https://api.telegram.org/bot'.$this->token.'/sendMessage');
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($message)
+            $text = ($this->parseMode == 'HTML') ? "<b>$type</b>: " : "$type: ";
+            $text.= "$title\n\r\n$body";
+            $this->curl->setHeader('Content-Type', 'application/json');
+            $this->curl->post('https://api.telegram.org/bot'.$this->token.'/sendMessage', [
+                'chat_id' => $this->chatId,
+                'parse_mode' => $this->parseMode,
+                'text' => $text
             ]);
-
-            $result = curl_exec($ch);
-            curl_close($ch);
         }
     }
 }
